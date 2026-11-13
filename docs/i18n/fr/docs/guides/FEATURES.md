@@ -59,27 +59,17 @@ Les connexions OpenRouter peuvent stocker un `preset` par connexion dans les par
 
 ## 🎨 Combos
 
-Créez des combos de routage de modèles avec 19 stratégies publiques : priority, weighted, round-robin, context-relay, fill-first, p2c (choix entre deux possibilités), random, least-used, cost-optimized, reset-aware, reset-window, headroom, strict-random, auto, lkgp (dernier fournisseur connu comme fonctionnel), context-optimized, cache-optimized, **fusion** (interroge en parallèle un panel de modèles, puis synthétise une réponse unique via un juge) et **pipeline**. Chaque combo enchaîne plusieurs modèles avec un repli automatique et inclut des modèles de configuration rapide ainsi que des contrôles de disponibilité.
+Créez des combinaisons de routage de modèles avec 21 stratégies publiques : priorité, pondérée, round-robin, relais de contexte, remplissage en premier, p2c (choix puissance de deux), aléatoire, moins utilisé, optimisé en termes de coût, tenant compte de la réinitialisation, réinitialisation de la fenêtre, expiration en premier, marge, pondéré par quota, strictement aléatoire, automatique, lkgp (dernier fournisseur de qualité connu), optimisé pour le contexte, optimisé pour le cache,** fusion** (distribuez-vous à un panel de modèles en parallèle, puis synthétisez une réponse via un juge), et** pipeline** . Chaque combo enchaîne plusieurs modèles avec un repli automatique et comprend des modèles rapides et des contrôles de préparation.
 
-Améliorations récentes des combos :
+Améliorations récentes des combos :
 
-- **Créateur de combos structuré** — créez chaque étape en sélectionnant le fournisseur, le modèle et le compte ou la connexion exacte
-- **Prise en charge des fournisseurs répétés** — réutilisez le même fournisseur plusieurs fois dans un combo, à condition que le tuple `(provider, model, connection)` soit unique
-- **État de santé des cibles de combo** — les vues d’analyse et d’état de santé distinguent désormais les différentes cibles ou étapes d’un combo au lieu de tout regrouper sous forme de chaînes de modèles
-- **Ordre des niveaux composites** — `defaultTier -> fallbackTier` influence désormais l’ordre d’exécution et de repli lors de l’exécution pour les étapes de premier niveau d’un combo
-- **Modèles d’invite système** — le `system_message` d’un combo prend en charge côté serveur les espaces réservés
-  `{{MODEL_ID}}`, `{{PROVIDER_ID}}`, `{{ACCOUNT}}` et `{{FINGERPRINT}}`,
-  remplacés à partir de la cible effectivement sélectionnée juste avant l’envoi.
-  Ils sont soumis à une liste d’autorisation et ne sont pas récursifs ; les espaces réservés inconnus restent littéraux ; les valeurs vides
-  sont remplacées par une chaîne vide ; les invites système du client ne sont jamais réécrites. `{{FINGERPRINT}}`
-  n’est résolu que pour les fournisseurs gratuits basés sur des empreintes, avec une empreinte épinglée ou
-  automatiquement renouvelée — ailleurs, il est remplacé par une chaîne vide (par exemple
-  pour les connexions à empreinte unique ou les fournisseurs sans empreinte). Le remplacement s’applique à la
-  boucle d’envoi standard, au round-robin et aux sessions de cache de contexte épinglées ;
-  les stratégies fusion, chaos, pipeline et nested-execute ne remplacent pas encore
-  les espaces réservés.
+- **Générateur de combo structuré** — crée chaque étape en sélectionnant le fournisseur, le modèle et account/connection exact
+- **Assistance répétée du fournisseur** — réutilise le même fournisseur plusieurs fois dans une seule combinaison tant que le tuple `(provider, model, connection)` est unique
+- **Santé de la cible combinée** Les surfaces d'analyse et de santé — distinguent désormais les combos individuels targets/steps au lieu de tout réduire en chaînes de modèle.
+- **Ordre de niveau composite** — `defaultTier -> fallbackTier` influence désormais l'ordre execution/fallback d'exécution pour les étapes de combo de niveau supérieur
+- **Modèles d'invite système** — combo `system_message` prend en charge les espaces réservés `{{MODEL_ID}}`, `{{PROVIDER_ID}}`, `{{ACCOUNT}}` et `{{FINGERPRINT}}` côté serveur, développés à partir de la cible réellement acheminée juste avant l'expédition. Autorisé et non récursif ; les espaces réservés inconnus restent littéraux ; les valeurs vides deviennent vides ; les invites du système client ne sont jamais réécrites. `{{FINGERPRINT}}` résout uniquement pour les fournisseurs gratuits basés sur les empreintes digitales avec une empreinte digitale épinglée ou à rotation automatique — il s'étend pour être vide ailleurs (par exemple, connexions à empreinte unique, fournisseurs non fp). L'extension couvre les sessions de boucle de répartition standard, de round-robin et de cache contextuel épinglé ; Les stratégies de fusion, de chaos, de pipeline et d'exécution imbriquée n'étendent pas encore les espaces réservés.
 
-![Tableau de bord des combos](../screenshots/02-combos.png)
+![Combos Dashboard](../screenshots/02-combos.png)
 
 ---
 
